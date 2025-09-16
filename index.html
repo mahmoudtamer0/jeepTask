@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>مولّد اختبار</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                direction: rtl;
+                padding: 20px;
+            }
+
+            #exam {
+                margin-top: 20px;
+            }
+
+            li {
+                margin-bottom: 6px;
+            }
+        </style>
+    </head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            color: #333;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 15px;
+            font-weight: normal;
+            color: #444;
+        }
+
+        label {
+            font-size: 16px;
+        }
+
+        input[type="number"] {
+            padding: 5px;
+            width: 80px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 8px 15px;
+            background: #4CAF50;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        #exam {
+            margin-top: 20px;
+            text-align: left;
+            display: inline-block;
+            background: #fff;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+    </style>
+
+
+    <body>
+        <h2> بنك الأسئلة (jeep task)</h2>
+
+        <label for="total">عدد الأسئلة في الاختبار:</label>
+        <input type="number" id="total" min="1" max="150" value="10">
+        <button id="generate">توليد الاختبار</button>
+
+        <ol id="exam"></ol>
+
+        <script>
+            // إنشاء بنك الأسئلة (مجرد بيانات وهمية)
+            const mandatory = Array.from({ length: 50 }, (_, i) => `سؤال إجباري رقم ${i + 1}`);
+            const optional = Array.from({ length: 100 }, (_, i) => `سؤال اختياري رقم ${i + 1}`);
+
+            const examList = document.getElementById("exam");
+            const btn = document.getElementById("generate");
+            const totalInput = document.getElementById("total");
+
+            // دالة لتوليد أسئلة عشوائية
+            function generateExam() {
+                const total = parseInt(totalInput.value);
+
+                if (isNaN(total) || total < 1 || total > 150) {
+                    alert("من فضلك أدخل عدد بين 1 و 150");
+                    return;
+                }
+
+                // أقل نسبة إجباري = 40%
+                const minMandatory = Math.ceil(total * 0.4);
+
+                if (minMandatory > mandatory.length) {
+                    alert(`لا يمكن توليد ${total} سؤال، عدد الإجبارية المتاحة أقل من المطلوب.`);
+                    return;
+                }
+
+                if (total > mandatory.length + optional.length) {
+                    alert("عدد الأسئلة المطلوب أكبر من المتاح.");
+                    return;
+                }
+
+                // نختار أسئلة إجباري عشوائية
+                const shuffledMand = mandatory.slice().sort(() => 0.5 - Math.random());
+                const mandCount = minMandatory;
+                const chosenMand = shuffledMand.slice(0, mandCount);
+
+                // عدد الأسئلة المتبقية من الاختياري
+                const remaining = total - mandCount;
+                const shuffledOpt = optional.slice().sort(() => 0.5 - Math.random());
+                const chosenOpt = shuffledOpt.slice(0, remaining);
+
+                // نجمع الاختبار
+                const examQuestions = [...chosenMand, ...chosenOpt].sort(() => 0.5 - Math.random());
+
+                // نعرض النتيجة
+                examList.innerHTML = "";
+                examQuestions.forEach(q => {
+                    const li = document.createElement("li");
+                    li.textContent = q;
+                    examList.appendChild(li);
+                });
+            }
+
+            btn.addEventListener("click", generateExam);
+        </script>
+    </body>
+
+</html>
