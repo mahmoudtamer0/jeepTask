@@ -73,10 +73,17 @@
         li {
             margin-bottom: 6px;
         }
+
+        h1 {
+            text-align: center;
+            color: rgb(53, 122, 233);
+            font-size: 30px;
+        }
     </style>
 
 
     <body>
+        <h1>By <a href="https://www.linkedin.com/in/mahmoudtamer0/">Mahmoud Tamer</a></h1>
         <h2> بنك الأسئلة (jeep task)</h2>
 
         <label for="total">عدد الأسئلة في الاختبار:</label>
@@ -99,7 +106,7 @@
                 const total = parseInt(totalInput.value);
 
                 if (isNaN(total) || total < 1 || total > 150) {
-                    alert("من فضلك أدخل عدد بين 1 و 150");
+                    alert("1 to 150")
                     return;
                 }
 
@@ -112,7 +119,7 @@
                 }
 
                 if (total > mandatory.length + optional.length) {
-                    alert("عدد الأسئلة المطلوب أكبر من المتاح.");
+                    alert(" أكبر من المتاح.");
                     return;
                 }
 
